@@ -45,8 +45,12 @@ namespace Chat
                 {
                     var cnt = int.Parse(Console.ReadLine());
                     var handler = Task.Factory.StartNew(() => Handler());
+                    ProcessStartInfo info = new ProcessStartInfo("Chat.exe", "client");
+                    info.CreateNoWindow = false;
+                    info.WindowStyle = ProcessWindowStyle.Normal;
+                    info.UseShellExecute = true;
                     for (var i = 0; i < cnt; i++)
-                        Task.Factory.StartNew(() => Process.Start("Chat.exe", "client"));
+                        Process.Start(info);
 
                     handler.Wait();
 
