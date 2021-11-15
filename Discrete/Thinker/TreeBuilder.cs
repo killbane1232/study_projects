@@ -1,4 +1,4 @@
-
+using System.Linq;
 using System;
 using System.Collections.Generic;
 namespace Thinker
@@ -6,11 +6,10 @@ namespace Thinker
     public class TreeBuilder
     {
         public Node Root;
-        Dictionary<char,int> Variables;
-        List<int> Data;
+        public List<char> Variables;
         public TreeBuilder(string input)
         {
-            Variables = new Dictionary<char, int>();
+            Variables = new List<char>();
             List<Node> list = new List<Node>();
             foreach (var each in input)
             {
@@ -22,7 +21,7 @@ namespace Thinker
             bool reverser=false;
             foreach (var each in list)
             {
-                if(each.Data=='¬' || each.Data=='-')
+                if(each.Data=='¬' || each.Data=='-' || each.Data=='~')
                 {
                     reverser=true;
                     continue;    
@@ -34,8 +33,8 @@ namespace Thinker
                 }
                 if (prior < 0)
                 {
-                    if(!Variables.ContainsKey((char)each.Data))
-                        Variables.Add((char)each.Data, Variables.Count);
+                    if(!Variables.Contains((char)each.Data))
+                        Variables.Add((char)each.Data);
                     each.reverse=reverser;
                     reverser=false;
                     outPut.Add(each);
@@ -98,12 +97,12 @@ namespace Thinker
                     }
                 }
             }
+            Variables.Sort();
         }
         public List<List<int>> TruthTable()
         {
-            Data = new List<int>();
+            var Data = new List<int>();
             var len = Variables.Count;
-            
             for(int i =0;i<len;i++)
                 Data.Add(0);
             var table = new List<List<int>>();
@@ -126,6 +125,35 @@ namespace Thinker
                 table.Add(str);
             }
             return table;
+        }
+        public static bool TruthTableCheck(TreeBuilder A, TreeBuilder B)
+        {
+            var union = new List<char>(A.Variables.Union(B.Variables));
+            var Data = new List<int>();
+            var len = union.Count;
+            union.Sort();
+            for(int i =0;i<len;i++)
+                Data.Add(0);
+            while(Data[0]!=2)
+            {
+                var str = new List<int>();
+                for(int i =0;i<len;i++)
+                {
+                    str.Add(Data[i]);
+                }
+                var countA = A.Root.Count(A.Variables, Data);
+                var countB = B.Root.Count(B.Variables, Data);
+                if(countA!=countB)
+                    return false;
+                Data[len-1]++;
+                for(int i=len-1;i>0;i--)
+                    if(Data[i]==2)
+                    {
+                        Data[i]=0;
+                        Data[i-1]++;
+                    }
+            }
+            return true;
         }
     }
 }

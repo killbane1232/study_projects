@@ -17,6 +17,7 @@ namespace Thinker
                     case '|':
                     case 'v':
                     case '+':
+                    case '>':
                     case '→': return 2;
                     case '(': return 1;
                     case ')': return 0;
@@ -61,14 +62,18 @@ namespace Thinker
             else
                 return (Priority==-1);
         }
-        public bool Count(Dictionary<char,int> vars, List<int> data)
+        public bool Count(List<char> vars, List<int> data)
         {
             switch(Data)
             {
+                case '*':
+                case '&':
                 case '^': return (Left.Count(vars,data)&&Right.Count(vars,data))^reverse;
+                case '+':
                 case 'v': return (Left.Count(vars,data)||Right.Count(vars,data))^reverse;
+                case '>':
                 case '→': return ((!Left.Count(vars,data))||Right.Count(vars,data))^reverse;
-                default: return (data[vars[(char)Data]]==1^reverse);
+                default: return (data[vars.IndexOf((char)Data)]==1^reverse);
             }
         }
     }

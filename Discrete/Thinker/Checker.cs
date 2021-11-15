@@ -8,13 +8,9 @@ namespace Thinker
         
         public bool Check(List<List<int>> first, List<List<int>> seckond)
         {
-            if(first.Count!=seckond.Count)
-                return false;
-            int cnt = 0;
-            for(int i =0;i<first.Count;i++)
-                cnt+=first[i][first[i].Count-1]-seckond[i][seckond[i].Count-1];
-            if(cnt!=0)
-                return false;
+            var connects = new List<int>();
+            var len = first[0].Count-1;
+            var hei = first.Count;
             return true;
         }
     }
