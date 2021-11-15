@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 namespace Thinker
 {
-    public class TreeBuilder
+    public class OPZBuilder
     {
         public Node Root;
         public List<char> Variables;
-        public TreeBuilder(string input)
+        public OPZBuilder(string input)
         {
             Variables = new List<char>();
             List<Node> list = new List<Node>();
@@ -126,7 +126,57 @@ namespace Thinker
             }
             return table;
         }
-        public static bool TruthTableCheck(TreeBuilder A, TreeBuilder B)
+        public string BuildDNF()
+        {
+            var table = this.TruthTable();
+            string res = "";
+            for(int i =0;i<table.Count;i++)
+            {
+                if(table[i][table[i].Count-1]!=1)
+                    continue;
+                if(i!=0)
+                    res+="v";
+                res+="(";
+                for(int j=0;j<table[i].Count-1;j++)
+                {
+                    if(j!=0)
+                        res+="^";
+                    if(table[i][j]==1)
+                        res+=Variables[j];
+                    else
+                        res+=$"¬{Variables[j]}";
+                }
+                res+=")";
+            }
+            return res;
+        }
+        public string BuildKNF()
+        {
+            var table = this.TruthTable();
+            string res = "";
+            bool flag = false;
+            for(int i =0;i<table.Count;i++)
+            {
+                if(table[i][table[i].Count-1]!=0)
+                    continue;
+                if(flag)
+                    res+="^";
+                flag = true;
+                res+="(";
+                for(int j=0;j<table[i].Count-1;j++)
+                {
+                    if(j!=0)
+                        res+="v";
+                    if(table[i][j]!=1)
+                        res+=Variables[j];
+                    else
+                        res+=$"¬{Variables[j]}";
+                }
+                res+=")";
+            }
+            return res;
+        }
+        public static bool TruthTableCheck(OPZBuilder A, OPZBuilder B)
         {
             var union = new List<char>(A.Variables.Union(B.Variables));
             var Data = new List<int>();
