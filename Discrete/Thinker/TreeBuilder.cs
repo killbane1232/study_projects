@@ -13,7 +13,10 @@ namespace Thinker
             Variables = new Dictionary<char, int>();
             List<Node> list = new List<Node>();
             foreach (var each in input)
-                list.Add(new Node(each));
+            {
+                if(!Char.IsWhiteSpace(each))
+                    list.Add(new Node(each));
+            }   
             List<Node> outPut = new List<Node>();
             Stack<Node> stack = new Stack<Node>();
             bool reverser=false;
@@ -64,13 +67,6 @@ namespace Thinker
             }
             while (stack.Count > 0)
                 outPut.Add(stack.Pop());
-            foreach(var each in outPut)
-            {
-                if(each.reverse)
-                    Console.Write($"-{each.Data} ");
-                else
-                    Console.Write($"{each.Data} ");
-            }
             Root = new Node(' ');
             Root.Data = null;
             var traveler = Root;
@@ -103,30 +99,23 @@ namespace Thinker
                 }
             }
         }
-        public string TruthTable()
+        public List<List<int>> TruthTable()
         {
-            string result = "";
             Data = new List<int>();
             var len = Variables.Count;
-            var header = new List<char>(len);
-            for(int i =0;i<len;i++)
-                header.Add(' ');
-            foreach(var each in Variables)
-                header[each.Value]=each.Key;
-            for(int i =0;i<len;i++)
-                result+=header[i]+" ";
-            result+='\n';
+            
             for(int i =0;i<len;i++)
                 Data.Add(0);
+            var table = new List<List<int>>();
             while(Data[0]!=2)
             {
+                var str = new List<int>();
                 for(int i =0;i<len;i++)
-                    result+=Data[i]+" ";
+                {
+                    str.Add(Data[i]);
+                }
                 var count = Root.Count(Variables, Data);
-                if(count)
-                    result+="1\n";
-                else
-                    result+="0\n";
+                str.Add((count?1:0));
                 Data[len-1]++;
                 for(int i=len-1;i>0;i--)
                     if(Data[i]==2)
@@ -134,8 +123,9 @@ namespace Thinker
                         Data[i]=0;
                         Data[i-1]++;
                     }
+                table.Add(str);
             }
-            return result;
+            return table;
         }
     }
 }
