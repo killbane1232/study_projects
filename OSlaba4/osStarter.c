@@ -10,70 +10,58 @@
 void server(int pid)
 {
 	printf("child %d\nparent %d",pid,getpid());
-        //kill(pid,SIGSTOP);
-        char server_message[256] = "You have reached the server!";
-        printf("Server executing\n");
- 	    // create the server socket
- 	    int server_socket;
- 	    server_socket = socket(AF_INET, SOCK_STREAM, 0);
- 	    // define the server address
- 	    struct sockaddr_in server_address;
- 	    server_address.sin_family = AF_INET;
- 	    server_address.sin_port = htons(8005); 
- 	    server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
- 	    // bind the socket to our specified IP and port
-	    //printf("started listening\n");
-		bind(server_socket, (struct sockaddr*) &server_address, sizeof(server_address));
- 	    // second agrument is a backlog - how many connections can be waiting for this socket simultaneously
- 	    
-		kill(pid,SIGCONT);
- 	    listen(server_socket, 5);
-
-	    accept(server_socket, NULL, NULL);
-	    // send the message
-	    send(server_socket, server_message, sizeof(server_message), 0);
-    	// close the socket
-	    printf("data sent");
-	    close(server_socket);
-		exit(0);
+    printf("Server executing\n");
+ 	int server_socket;
+ 	server_socket = socket(AF_INET, SOCK_STREAM, 0);
+ 	struct sockaddr_in server_address;
+ 	server_address.sin_family = AF_INET;
+ 	server_address.sin_port = htons(8005); 
+ 	server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+	bind(server_socket, (struct sockaddr*) &server_address, sizeof(server_address));
+	int status;
+	waitpid(pid,&status,WUNTRACED);
+	while(!WIFSTOPPED(status))
+	{
+		printf("waiting stop\n");
+		waitpid(pid,&status,WUNTRACED);
+	}
+ 	listen(server_socket, 5);
+	kill(pid,SIGCONT);
+	printf("continued\n");
+	accept(server_socket, NULL, NULL);
+	printf("Accepted\n");
+    char server_message[256] = "You have reached the server!";
+	send(server_socket, server_message, sizeof(server_message), 0);
+	printf("data sent\n");
+	close(server_socket);
 }
 void client()
 {
-        kill(getpid(),SIGSTOP);
-    	//int parrentPID = getppid();
-        int network_socket;
-        int status;
-	    network_socket = socket(AF_INET, SOCK_STREAM, 0);
-	    // specify an address for the socket
-	    struct sockaddr_in server_address;
-	    server_address.sin_family = AF_INET;
-	    server_address.sin_port = htons(8005);
-	    server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
-		/*waitpid(getpid(), &status,WUNTRACED);
-		while (!WIFSTOPPED(status))
-		{
-			waitpid(getpid(), &status,WUNTRACED);
-			printf("status %d\n",status);
-			// code 
-		}*/
-		
-
+	kill(getpid(),SIGSTOP);
+	printf("stopped\n");
+	sleep(1);
+    int network_socket;
+    int status;
+	network_socket = socket(AF_INET, SOCK_STREAM, 0);
+	struct sockaddr_in server_address;
+	server_address.sin_family = AF_INET;
+	server_address.sin_port = htons(8005);
+	server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
+	status = connect(network_socket, (struct sockaddr *) &server_address, sizeof(server_address));
+	while(-1==status)
+	{
 		status = connect(network_socket, (struct sockaddr *) &server_address, sizeof(server_address));
-
-	    if(-1==status)
-	    {
-		    // check for error with the connection
-		    printf("Server not avaivable\n\n");
-	    }
-
-	    // receive data from the server
-	    char server_response[256];
-	    recv(network_socket, &server_response, sizeof(server_response), 0);
-	    // print out the server's response
-	    printf("The server sent the data: %s\n", server_response);
-	    // and then close the socket
-	    close(network_socket);
-		exit(0);
+		sleep(1);
+	    printf("Server not avaivable\n\n");
+	}
+	char server_response[256];
+	recv(network_socket, &server_response, sizeof(server_response), 0);
+	while(0==strlen(server_response))
+	{
+		recv(network_socket, &server_response, sizeof(server_response), 0);
+	}
+	printf("The server sent the data: %s\n", server_response);
+	close(network_socket);
 }
 int main()
 {
@@ -88,9 +76,11 @@ int main()
         break;
     case 0:
         client();
+		exit(0);
         break;
     default:
         server(pid);
+		exit(0);
         break;
     }
     return 0;
