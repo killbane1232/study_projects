@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Observer2", "Observer2\Obse
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Observer3", "Observer3\Observer3.csproj", "{834B093B-AA83-4165-93EB-99C97DEF5472}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strategy", "Strategy\Strategy.csproj", "{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{834B093B-AA83-4165-93EB-99C97DEF5472}.Release|x64.Build.0 = Release|Any CPU
 		{834B093B-AA83-4165-93EB-99C97DEF5472}.Release|x86.ActiveCfg = Release|Any CPU
 		{834B093B-AA83-4165-93EB-99C97DEF5472}.Release|x86.Build.0 = Release|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Debug|x64.Build.0 = Debug|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Release|x64.Build.0 = Release|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB3CF5D1-9400-4E5A-B81F-1FCCA9D7396A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

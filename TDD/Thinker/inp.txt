@@ -1,0 +1,1 @@
+﻿:= sub 3 b i + j + 1 + k func 1 sin x - s1 / 5 2
