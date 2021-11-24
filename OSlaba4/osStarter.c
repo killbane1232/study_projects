@@ -28,10 +28,10 @@ void server(int pid)
  	listen(server_socket, 5);
 	kill(pid,SIGCONT);
 	printf("continued\n");
-	accept(server_socket, NULL, NULL);
+	int inner = accept(server_socket, NULL, NULL);
 	printf("Accepted\n");
     char server_message[256] = "You have reached the server!";
-	send(server_socket, server_message, sizeof(server_message), 0);
+	send(inner, server_message, sizeof(server_message), 0);
 	printf("data sent\n");
 	close(server_socket);
 }
@@ -50,16 +50,12 @@ void client()
 	status = connect(network_socket, (struct sockaddr *) &server_address, sizeof(server_address));
 	while(-1==status)
 	{
-		status = connect(network_socket, (struct sockaddr *) &server_address, sizeof(server_address));
 		sleep(1);
 	    printf("Server not avaivable\n\n");
+		status = connect(network_socket, (struct sockaddr *) &server_address, sizeof(server_address));
 	}
 	char server_response[256];
 	recv(network_socket, &server_response, sizeof(server_response), 0);
-	while(0==strlen(server_response))
-	{
-		recv(network_socket, &server_response, sizeof(server_response), 0);
-	}
 	printf("The server sent the data: %s\n", server_response);
 	close(network_socket);
 }
