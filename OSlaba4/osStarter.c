@@ -9,7 +9,6 @@
 #include <unistd.h>
 void server(int pid)
 {
-	printf("child %d\nparent %d",pid,getpid());
     printf("Server executing\n");
  	int server_socket;
  	server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -19,12 +18,6 @@ void server(int pid)
  	server_address.sin_addr.s_addr = inet_addr("127.0.0.1");
 	bind(server_socket, (struct sockaddr*) &server_address, sizeof(server_address));
 	int status;
-	waitpid(pid,&status,WUNTRACED);
-	while(!WIFSTOPPED(status))
-	{
-		printf("waiting stop\n");
-		waitpid(pid,&status,WUNTRACED);
-	}
  	listen(server_socket, 5);
 	kill(pid,SIGCONT);
 	printf("continued\n");
@@ -33,13 +26,13 @@ void server(int pid)
     char server_message[256] = "You have reached the server!";
 	send(inner, server_message, sizeof(server_message), 0);
 	printf("data sent\n");
+	char server_response[256];
+	recv(inner, &server_response, sizeof(server_response), 0);
+	printf("The clnt sent the data: %s\n", server_response);
 	close(server_socket);
 }
 void client()
 {
-	kill(getpid(),SIGSTOP);
-	printf("stopped\n");
-	sleep(1);
     int network_socket;
     int status;
 	network_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -57,6 +50,9 @@ void client()
 	char server_response[256];
 	recv(network_socket, &server_response, sizeof(server_response), 0);
 	printf("The server sent the data: %s\n", server_response);
+    char server_message[256] = "You have reached the clnt!";
+	send(network_socket, server_message, sizeof(server_message), 0);
+	printf("data sent\n");
 	close(network_socket);
 }
 int main()
@@ -72,12 +68,11 @@ int main()
         break;
     case 0:
         client();
-		exit(0);
         break;
     default:
         server(pid);
-		exit(0);
         break;
     }
+	exit(0);
     return 0;
 }
