@@ -20,8 +20,7 @@ namespace Queue
         }
         public int Capacity
         {
-            get;
-            private set;
+            get=>_array.Length;
         }
 
         private T[] _array;
@@ -33,7 +32,6 @@ namespace Queue
             _array = new T[4];
             _head = 0;
             _tail = -1;
-            Capacity = 4;
             _count = 0;
         }
 
@@ -41,17 +39,16 @@ namespace Queue
         {
             if (_count == Capacity)
             {
-                var buffer = new T[Capacity * 2];
-                Array.Copy(_array,_head,buffer,0,Capacity-_head); 
+                var buffer = new T[_array.Length*2];
+                Array.Copy(_array,_head,buffer,0,_array.Length-_head); 
                 if (_head < _tail)
-                    Array.Copy(_array,0,buffer,Capacity-_head,_head);
+                    Array.Copy(_array,0,buffer, _array.Length-_head,_head);
                 _head = 0;
                 _tail = _count - 1;
-                Capacity *= 2;
                 _array = buffer;
             }
 
-            _tail = (_tail + 1) % Capacity;
+            _tail = (_tail + 1) % _array.Length;
             _array[_tail] = item;
             _count++;
         }
