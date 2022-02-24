@@ -27,7 +27,7 @@ namespace Queue
                 a.Enqueue(list[i]);
             }
             watch.Stop();
-            var res1 = watch.ElapsedTicks;
+            var res1 = watch.Elapsed;
 
             watch.Reset();
             watch.Start();
@@ -36,7 +36,7 @@ namespace Queue
                 b.Enqueue(list[i]);
             }
             watch.Stop();
-            Console.WriteLine($"Equeue:\nMy:{res1}\nSystem:{watch.ElapsedTicks}");
+            Console.WriteLine($"Equeue:\nMy:{res1}\nSystem:{watch.Elapsed}");
 
             watch.Reset();
             watch.Start();
@@ -45,7 +45,7 @@ namespace Queue
                 a.Contains(list[i]);
             }
             watch.Stop();
-            res1 = watch.ElapsedTicks;
+            res1 = watch.Elapsed;
 
             watch.Reset();
             watch.Start();
@@ -54,7 +54,7 @@ namespace Queue
                 b.Contains(list[i]);
             }
             watch.Stop();
-            Console.WriteLine($"Contains:\nMy:{res1}\nSystem:{watch.ElapsedTicks}");
+            Console.WriteLine($"Contains:\nMy:{res1}\nSystem:{watch.Elapsed}");
 
             watch.Reset();
             watch.Start();
@@ -63,7 +63,7 @@ namespace Queue
                 a.Dequeue();
             }
             watch.Stop();
-            res1 = watch.ElapsedTicks;
+            res1 = watch.Elapsed;
 
             watch.Reset();
             watch.Start();
@@ -72,7 +72,7 @@ namespace Queue
                 b.Dequeue();
             }
             watch.Stop();
-            Console.WriteLine($"Dequeue:\nMy:{res1}\nSystem:{watch.ElapsedTicks}");
+            Console.WriteLine($"Dequeue:\nMy:{res1}\nSystem:{watch.Elapsed}");
         }
     }
 }
