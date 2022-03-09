@@ -87,7 +87,7 @@ namespace AVLTree
             }
         }
 
-        private int MaxChildHeight(AVLTreeNode<TKey, TValue> node)
+        public int MaxChildHeight(AVLTreeNode<TKey, TValue> node)
         {
             if (node != null)
             {
