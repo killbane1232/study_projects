@@ -59,7 +59,7 @@ namespace OSLaba31
             this.trackBar1.Location = new System.Drawing.Point(12, 25);
             this.trackBar1.Maximum = 10000;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(189, 45);
+            this.trackBar1.Size = new System.Drawing.Size(1231, 45);
             this.trackBar1.TabIndex = 2;
             this.trackBar1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.trackBar1_MouseUp);
             // 
@@ -74,6 +74,7 @@ namespace OSLaba31
             // 
             // label2
             // 
+            this.label2.AutoEllipsis = true;
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(12, 114);
             this.label2.Name = "label2";
@@ -85,7 +86,7 @@ namespace OSLaba31
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(215, 149);
+            this.ClientSize = new System.Drawing.Size(1255, 142);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.trackBar1);

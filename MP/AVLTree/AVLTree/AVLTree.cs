@@ -32,22 +32,29 @@ namespace AVLTree
 
         private void AddTo(AVLTreeNode<TKey, TValue> node, TKey key, TValue value)
         {
-            if (key.CompareTo(node.Key) < 0)
-                if (node.Left == null)
-                {
-                    node.Left = new AVLTreeNode<TKey, TValue>(key, value, node, this);
-                    node.Parent?.Balance();
-                }
-                else
-                    AddTo(node.Left, key, value);
-            else
-            if (node.Right == null)
+            switch(key.CompareTo(node.Key))
             {
-                node.Right = new AVLTreeNode<TKey, TValue>(key, value, node, this);
-                node.Parent?.Balance();
+                case -1:
+                    if (node.Left == null)
+                    {
+                        node.Left = new AVLTreeNode<TKey, TValue>(key, value, node, this);
+                        node.Parent?.Balance();
+                    }
+                    else
+                        AddTo(node.Left, key, value);
+                    break;
+                case 0:
+                    throw new ArgumentException("Item with Equals Key already been added");
+                case 1:
+                    if (node.Right == null)
+                    {
+                        node.Right = new AVLTreeNode<TKey, TValue>(key, value, node, this);
+                        node.Parent?.Balance();
+                    }
+                    else
+                        AddTo(node.Right, key, value);
+                    break;
             }
-            else           
-                AddTo(node.Right, key, value);
         }
 
         public bool Contains(TKey key)

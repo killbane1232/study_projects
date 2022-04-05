@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace OSLaba31
 {
@@ -16,15 +17,16 @@ namespace OSLaba31
         private bool first = true;
         private CancellationToken token = new CancellationToken();
         CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
-        public delegate void InvokeDelegate(object[] arr);
+        public delegate void InvokeDelegate(string arr);
+        const int threadCounter = 20;
 
         private void Tasker(int val)
         {
-            var cnt = 20;
-            if (val < 20) cnt = val;
+            var cnt = threadCounter;
+            if (val < threadCounter) cnt = val;
             var list = new Task[cnt];
-
-            var results = new List<decimal>(); 
+            
+            var results = new List<BigInteger>(); 
             var i = 1;
             for (; i <= cnt; i++)
             {
@@ -34,6 +36,7 @@ namespace OSLaba31
             }
 
             i = 0;
+            var decima = decimal.MaxValue;
             while(i<cnt)
             {
                 Task.WaitAny(list);
@@ -41,32 +44,38 @@ namespace OSLaba31
                 for(int j = 0;j<cnt;j++)
                     if (list[j].IsCompleted)
                         i++;
-                string r = (((i + 1) / cnt) * 100).ToString();
+                string r = (((i + 1) / (cnt+1)) * 100).ToString();
                 var arr2 = new object[1];
                 arr2[0] = r;
                 progressPercent.BeginInvoke(new InvokeDelegate(InvokeMethod), arr2);
                 //progressBar.Value = ((i + 1) / cnt) * 100;
             }
 
-            decimal? res=1;
+            BigInteger res=1;
             results.ForEach(x=>res*=x);
             var arr = new object[1] ;
-            arr[0] = res.ToString() as object;
+            arr[0] = res.ToString();
             label2.BeginInvoke(new InvokeDelegate(InvokeLabel), arr);
         }
-        public void InvokeMethod(object[] percent)
+        public class shell
         {
-            progressPercent.Text = percent[0] as string;
-            progressBar.Value = int.Parse(percent[0] as string);
+            public int a;
+            public string b;
         }
-        public void InvokeLabel(object[] percent)
+        public void InvokeMethod(string percent)
         {
-            label2.Text = percent[0] as string;
+            progressPercent.Text = percent;
+            progressBar.Value = int.Parse(percent);
         }
-        private void Factor(int i, int cnt, List<decimal> results, int val)
+        public void InvokeLabel(string percent)
         {
-            for (var j = i; j < val; j += cnt)
-                results[i-1] *= j;
+            label2.Text = percent;
+        }
+        private void Factor(int i, int cnt, List<BigInteger> results, int val)
+        {
+            var a = i;
+            for (var j = a; j <= val; j += cnt)
+                results[a-1] *= j;
         }
 
         private void trackBar1_MouseUp(object sender, MouseEventArgs e)
@@ -78,7 +87,7 @@ namespace OSLaba31
                 CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
                 if (!first && !token.IsCancellationRequested)
                     cancelTokenSource.Cancel();
-                while (mac)
+                while (false)
                     Thread.Sleep(100);
                 cancelTokenSource = new CancellationTokenSource();
                 token = cancelTokenSource.Token;
