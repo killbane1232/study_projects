@@ -58,14 +58,15 @@ namespace HashTable
         public void Remove(TKey key)
         {
             var hashKey = _hashMaker.ReturnHash(key);
-            if (_table[hashKey] == null)
+            var item = _table[hashKey];
+            if (item == null)
                 return;
             int index = 0;
-            int count = _table[hashKey].Count;
-            for(;index<count;index++)
-                if (_table[hashKey][index].Key.Equals(key)) 
+            int count = item.Count;
+            for (; index < count; index++)
+                if (item[index].Key.Equals(key))
                 {
-                    _table[hashKey].RemoveAt(index);
+                    item.RemoveAt(index);
                     Count--;
                     return;
                 }
@@ -73,17 +74,32 @@ namespace HashTable
 
         private void IncreaseTable()
         {
-            var buffer = new List<KeyValuePair<TKey, TValue>>();
+            //int cnter = _table.Length;
 
-            buffer.AddRange(this);
+            var buff = _table;
 
             var capacity = _primeNumber.Next();
             _currentChainLength = 0;
             _table = new List<Pair<TKey, TValue>>[capacity];
             _hashMaker.SimpleNumber = capacity;
             Count = 0;
-            foreach(var each in buffer)
-                Add(each.Key, each.Value);
+
+            foreach (var each in buff)
+            {
+                if (each == null)
+                    continue;
+                foreach (var el in each)
+                    Add(el.Key, el.Value);
+            }
+            /*
+            for (int i = 0; i < cnter; i++)
+            {
+                if (buff[i] == null)
+                    continue;
+                int cnt2 = buff[i].Count;
+                for (int j = 0; j < cnt2; j++)
+                    Add(buff[i][j].Key, buff[i][j].Value);
+            }*/
         }
 
         public TValue this[TKey key]
@@ -110,11 +126,12 @@ namespace HashTable
         {
             int index = _hashMaker.ReturnHash(key);
             if (_table[index] == null) return null;
-            foreach (var pair in _table[index])
-            {
-                if (pair.Key.Equals(key))
-                    return pair;
-            }
+
+            int cnt = _table[index].Count;
+            for (int i = 0; i < cnt; i++)
+                if (_table[index][i].Key.Equals(key))
+                    return _table[index][i];
+
             return null;
         }
 
@@ -127,7 +144,19 @@ namespace HashTable
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return (from list in _table where list != null from pair in list select new KeyValuePair<TKey, TValue>(pair.Key, pair.Value)).GetEnumerator();
+            int cnt = _table.Length;
+            for (int i = 0; i < cnt; i++)
+            {
+                if (_table[i] == null)
+                    continue;
+                int cnt2 = _table[i].Count;
+
+                for (int j = 0; j < cnt2; j++)
+                {
+                    var item = _table[i][j];
+                    yield return new KeyValuePair<TKey, TValue>(item.Key, item.Value);
+                }
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -139,18 +168,16 @@ namespace HashTable
     internal class GetPrimeNumber
     {
         private int _current;
-        readonly int[] _primes = { 61, 127, 257, 523, 1087, 2213, 4519, 9619, 19717, 40009 };
+        readonly int[] _primes = { 61, 127, 257, 523, 1087, 2213, 4519, 9619, 19717, 40009, 83423 };
 
         public int Next()
         {
-            if (_current < _primes.Length)
+            if (_current < 11)
             {
-                var value = _primes[_current];
-                _current++;
+                var value = _primes[_current++];
                 return value;
             }
-            _current++;
-            return (_current - _primes.Length) * _primes[_primes.Length - 1];
+            return (_current++ - 11) * _primes[10];
         }
     }
 }

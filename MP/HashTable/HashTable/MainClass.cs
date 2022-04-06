@@ -19,35 +19,38 @@ namespace HashTable
             var hash = new ChainHashTable<string, int>();
             var reader = new StreamReader("file.txt");
             var data = reader.ReadToEnd().ToLower().Split(new char[]{
-                ',', ':', ' ', '.', '!', ';', '<', '?', 
-                '>', '-', '0', '1', '2', '3', '4', '5', 
-                '6', '7', '8', '9', '/', '"', '*', '(', 
+                ',', ':', ' ', '.', '!', ';', '<', '?',
+                '>', '-', '0', '1', '2', '3', '4', '5',
+                '6', '7', '8', '9', '/', '"', '*', '(',
                 ')', '\'','\n','\r','\\'
-                }, 
+                },
                 StringSplitOptions.RemoveEmptyEntries);
 
             var timer = new Stopwatch();
 
+            int cnt = data.Length;
             timer.Start();
-            foreach(var item in data)
+            for (int i = 0; i < cnt; i++)
             {
-                if(hash.ContainsKey(item))
-                    hash[item]++;
+                if (hash.ContainsKey(data[i]))
+                    hash[data[i]]++;
                 else
-                    hash.Add(item, 1);
+                    hash.Add(data[i], 1);
             }
             timer.Stop();
-            Console.WriteLine("hashAdd:" + timer.Elapsed);
+            Console.WriteLine("hashAdd:" + timer.ElapsedMilliseconds);
             timer.Reset();
 
             timer.Start();
-            foreach (var item in data)
-                if(dict.ContainsKey(item))
-                    dict[item]++;
+            for (int i = 0; i < cnt; i++)
+            {
+                if (dict.ContainsKey(data[i]))
+                    dict[data[i]]++;
                 else
-                    dict.Add(item, 1);
+                    dict.Add(data[i], 1);
+            }
             timer.Stop();
-            Console.WriteLine("dictAdd:" + timer.Elapsed);
+            Console.WriteLine("dictAdd:" + timer.ElapsedMilliseconds);
             timer.Reset();
 
             var toRemoveHash = new List<string>();
@@ -67,7 +70,7 @@ namespace HashTable
             foreach (var each in toRemoveHash)
                 hash.Remove(each);
             timer.Stop();
-            Console.WriteLine("hashRem:" + timer.Elapsed);
+            Console.WriteLine("hashRem:" + timer.ElapsedTicks);
             timer.Reset();
 
             timer.Start();
@@ -75,7 +78,7 @@ namespace HashTable
                 dict.Remove(each);
             timer.Stop();
 
-            Console.WriteLine("dictRem:" + timer.Elapsed);
+            Console.WriteLine("dictRem:" + timer.ElapsedTicks);
             Console.WriteLine("hashCnt:" + hash.Count);
             Console.WriteLine("dictCnt:" + dict.Count);
         }
