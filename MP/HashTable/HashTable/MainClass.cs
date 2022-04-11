@@ -27,7 +27,9 @@ namespace HashTable
                 StringSplitOptions.RemoveEmptyEntries);
 
             var timer = new Stopwatch();
-
+            
+            var toRemoveHash = new List<string>();
+            var toRemoveDict = new List<string>();
             int cnt = data.Length;
             timer.Start();
             for (int i = 0; i < cnt; i++)
@@ -38,7 +40,20 @@ namespace HashTable
                     hash.Add(data[i], 1);
             }
             timer.Stop();
+
             Console.WriteLine("hashAdd:" + timer.ElapsedMilliseconds);
+            foreach (var each in hash)
+            {
+                if (each.Value > 27)
+                    toRemoveHash.Add(each.Key);
+            }
+
+            timer.Start();
+            foreach (var each in toRemoveHash)
+                hash.Remove(each);
+            timer.Stop();
+
+            Console.WriteLine("hashAll:" + timer.ElapsedTicks);
             timer.Reset();
 
             timer.Start();
@@ -51,15 +66,7 @@ namespace HashTable
             }
             timer.Stop();
             Console.WriteLine("dictAdd:" + timer.ElapsedMilliseconds);
-            timer.Reset();
 
-            var toRemoveHash = new List<string>();
-            var toRemoveDict = new List<string>();
-            foreach (var each in hash)
-            {
-                if (each.Value > 27)
-                    toRemoveHash.Add(each.Key);
-            }
             foreach (var each in dict)
             {
                 if (each.Value > 27)
@@ -67,20 +74,11 @@ namespace HashTable
             }
 
             timer.Start();
-            foreach (var each in toRemoveHash)
-                hash.Remove(each);
-            timer.Stop();
-            Console.WriteLine("hashRem:" + timer.ElapsedTicks);
-            timer.Reset();
-
-            timer.Start();
             foreach (var each in toRemoveDict)
                 dict.Remove(each);
             timer.Stop();
 
-            Console.WriteLine("dictRem:" + timer.ElapsedTicks);
-            Console.WriteLine("hashCnt:" + hash.Count);
-            Console.WriteLine("dictCnt:" + dict.Count);
+            Console.WriteLine("dictAll:" + timer.ElapsedTicks);
         }
     }
 }

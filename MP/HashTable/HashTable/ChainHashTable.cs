@@ -36,19 +36,23 @@ namespace HashTable
         {
             var h = _hashMaker.ReturnHash(key);
 
-            if (_table[h] == null || !_table[h].Exists(p => p.Key.Equals(key)))
-            {
+            if (key == null)
+                throw new ArgumentNullException();
+
                 if (_table[h] == null)
                     _table[h] = new List<Pair<TKey, TValue>>(MaxChainLength);
+                else 
+                { 
+                int cnt = _table[h].Count;
+                for (int i = 0; i < cnt; i++)
+                    if (_table[h][i].Key.Equals(key))
+                        throw new ArgumentException();
+                }
                 var item = new Pair<TKey, TValue>(key, value);
                 _table[h].Add(item);
                 _currentChainLength = Math.Max(_currentChainLength, _table[h].Count);
                 Count++;
-            }
-            else
-            {
-                throw new ArgumentException();
-            }
+            
             if (_currentChainLength >= MaxChainLength) // проверка размера
             {
                 IncreaseTable();
@@ -58,15 +62,14 @@ namespace HashTable
         public void Remove(TKey key)
         {
             var hashKey = _hashMaker.ReturnHash(key);
-            var item = _table[hashKey];
-            if (item == null)
+            if (_table[hashKey] == null)
                 return;
             int index = 0;
-            int count = item.Count;
+            int count = _table[hashKey].Count;
             for (; index < count; index++)
-                if (item[index].Key.Equals(key))
+                if (_table[hashKey][index].Key.Equals(key))
                 {
-                    item.RemoveAt(index);
+                    _table[hashKey].RemoveAt(index);
                     Count--;
                     return;
                 }
