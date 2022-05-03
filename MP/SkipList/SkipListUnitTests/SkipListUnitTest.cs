@@ -10,7 +10,7 @@ namespace SkipListUnitTests
     public class SkipListUnitTest
     {
         [TestMethod]
-        public void CountIncreaseAfterAdding()
+        public void CountIncreaseAfterAddingTest()
         {
             int n = 10;
             var lib = new SkipList<int, int>();
@@ -21,8 +21,9 @@ namespace SkipListUnitTests
             }
             Assert.AreEqual(n, lib.Count);
         }
+
         [TestMethod]
-        public void ItemsExistsAfterAdding()
+        public void ItemsExistsAfterAddingTest()
         {
             var lib = new SkipList<int, int>();
             var nums = new List<int>(new[] { 44, 22, 1 , 56, 3, 90, 31, 15, 26 });
@@ -40,8 +41,9 @@ namespace SkipListUnitTests
             }
             Assert.AreEqual(n, lib.Count);
         }
+
         [TestMethod]
-        public void ContainsTestAdding()
+        public void ContainsTest()
         {
             var lib = new SkipList<int, int>();
             var nums = new List<int>(new[] { 44, 22, 1, 56, 3, 90, 31, 15, 26 });
@@ -56,8 +58,9 @@ namespace SkipListUnitTests
                 Assert.IsTrue(lib.Contains(nums[i]));
             }
         }
+
         [TestMethod]
-        public void RemoveTestAdding()
+        public void RemoveTest()
         {
             var lib = new SkipList<int, int>();
             var nums = new List<int>(new[] { 44, 22, 1, 56, 3, 90, 31, 15, 26 });
@@ -77,8 +80,9 @@ namespace SkipListUnitTests
                     Assert.IsTrue(lib.Contains(nums[i]));
             }
         }
+
         [TestMethod]
-        public void RandomItemsExistsAfterAdding()
+        public void RandomItemsExistsAfterAddingTest()
         {
             var lib = new SkipList<int, int>();
             var nums = new HashSet<int>();

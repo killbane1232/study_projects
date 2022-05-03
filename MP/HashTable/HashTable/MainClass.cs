@@ -31,6 +31,9 @@ namespace HashTable
             var toRemoveHash = new List<string>();
             var toRemoveDict = new List<string>();
             int cnt = data.Length;
+
+            long timerBuffer = 0;
+
             timer.Start();
             for (int i = 0; i < cnt; i++)
             {
@@ -41,7 +44,10 @@ namespace HashTable
             }
             timer.Stop();
 
+            timerBuffer += timer.ElapsedMilliseconds;
             Console.WriteLine("hashAdd:" + timer.ElapsedMilliseconds);
+            timer.Reset();
+
             foreach (var each in hash)
             {
                 if (each.Value > 27)
@@ -52,9 +58,13 @@ namespace HashTable
             foreach (var each in toRemoveHash)
                 hash.Remove(each);
             timer.Stop();
+            timerBuffer += timer.ElapsedMilliseconds;
 
-            Console.WriteLine("hashAll:" + timer.ElapsedTicks);
+            Console.WriteLine("hashRem:" + timer.ElapsedTicks);
+            Console.WriteLine("hashAll:" + timerBuffer);
             timer.Reset();
+
+            timerBuffer = 0;
 
             timer.Start();
             for (int i = 0; i < cnt; i++)
@@ -66,6 +76,9 @@ namespace HashTable
             }
             timer.Stop();
             Console.WriteLine("dictAdd:" + timer.ElapsedMilliseconds);
+            timerBuffer += timer.ElapsedMilliseconds;
+
+            timer.Reset();
 
             foreach (var each in dict)
             {
@@ -77,8 +90,10 @@ namespace HashTable
             foreach (var each in toRemoveDict)
                 dict.Remove(each);
             timer.Stop();
+            timerBuffer += timer.ElapsedMilliseconds;
 
-            Console.WriteLine("dictAll:" + timer.ElapsedTicks);
+            Console.WriteLine("dictRem:" + timer.ElapsedTicks);
+            Console.WriteLine("dictAll:" + timerBuffer);
         }
     }
 }
