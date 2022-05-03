@@ -24,7 +24,7 @@ namespace SkipList2020
                 var ran = rand.Next();
                 while (list.Contains(ran))
                     ran = rand.Next();
-                list.Add(rand.Next());
+                list.Add(ran);
             }
 
             var timer = new Stopwatch();
@@ -62,8 +62,8 @@ namespace SkipList2020
 
             timer.Start();
 
-            for (int i = 5000; i < 7000; i++)
-                skip.Remove(list[i]);
+            for (int i = 0; i < 10000; i++)
+                sort.Add(list[i], 0);
 
             timer.Stop();
             Console.WriteLine("sortAdd:" + timer.ElapsedMilliseconds);
@@ -75,8 +75,8 @@ namespace SkipList2020
 
             timer.Start();
 
-            for (int i = 0; i < 10000; i++)
-                sort.Add(list[i], 0);
+            for (int i = 5000; i < 7000; i++)
+                sort.Remove(list[i]);
 
             timer.Stop();
             timerBuffer += timer.ElapsedMilliseconds;
