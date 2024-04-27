@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://br7f7b6ijymqr"]
+
+[ext_resource type="Material" uid="uid://de67awq8ar85a" path="res://floor.tres" id="1_0pwlu"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i3pp0"]
+albedo_color = Color(0.494118, 0.494118, 0.494118, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_k8wdl"]
+material = SubResource("StandardMaterial3D_i3pp0")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qv5w8"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_jy53k"]
+material = ExtResource("1_0pwlu")
+
+[node name="Node3D" type="Node3D"]
+
+[node name="border" type="StaticBody3D" parent="."]
+
+[node name="border" type="MeshInstance3D" parent="border"]
+mesh = SubResource("BoxMesh_k8wdl")
+skeleton = NodePath("../..")
+
+[node name="border2" type="CollisionShape3D" parent="border"]
+shape = SubResource("BoxShape3D_qv5w8")
+
+[node name="grass" type="StaticBody3D" parent="."]
+
+[node name="grass" type="MeshInstance3D" parent="grass"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.00517, 0, 0)
+mesh = SubResource("BoxMesh_jy53k")
+skeleton = NodePath("../..")
+
+[node name="grass2" type="CollisionShape3D" parent="grass"]
+shape = SubResource("BoxShape3D_qv5w8")

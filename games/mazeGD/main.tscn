@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://1oe31w7ip8ru"]
+
+[ext_resource type="MeshLibrary" uid="uid://cowdejl4dbhws" path="res://meshlib.meshlib" id="1_4tb23"]
+[ext_resource type="Script" path="res://GridMap.gd" id="2_jn8ns"]
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.439651, 7.62939e-06, -0.309036)
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = ExtResource("1_4tb23")
+cell_size = Vector3(1, 1, 1)
+script = ExtResource("2_jn8ns")
+metadata/_editor_floor_ = Vector3(0, 0, 0)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.918722, 0.394904, 0, -0.394904, 0.918722, 47.6586, 45.8577, 104.503)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.471073, 0.517585, -0.71428, 0, 0.809755, 0.586768, 0.882094, -0.276411, 0.381454, 26.12, 58.5647, 0)
